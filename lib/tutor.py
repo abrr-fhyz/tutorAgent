@@ -3,25 +3,31 @@ from typing import Dict, Any
 from lib.tools.agent import Agent
 from lib.tools.mathTool import MathTool
 from lib.tools.physicsTool import PhysicsTool
+from lib.tools.syllabusTool import SyllabusAgent
 
 class TutorAgent(Agent):
     def __init__(self):
         super().__init__(
             name="Tutor Agent",
-            description="Main orchestrator that intelligently routes questions to specialized tools"
+            description="Main orchestrator that intelligently routes questions to specialized tools and agents"
         )
         self.specialized_tools = [
             MathTool(),
             PhysicsTool()
         ]
+        self.syllabus_agent = SyllabusAgent()
     
     def can_handle(self, question: str) -> bool:
-        return True  # Tutor can handle any question
+        return True  # Tutor can handle any question by routing appropriately
     
-    def find_best_agent(self, question: str) -> Agent:
+    def find_best_agent(self, question: str, mode: str) -> Agent:
         """Intelligently find the most suitable agent using AI classification"""
         
-        # Check each specialized agent's capability
+        # If mode is on-syllabus, use syllabus agent
+        if mode == "on-syllabus":
+            return self.syllabus_agent
+        
+        # For off-syllabus mode, check specialized tools first
         agent_scores = []
         for agent in self.specialized_tools:
             try:
@@ -50,79 +56,45 @@ class TutorAgent(Agent):
             except Exception:
                 continue
         
-        # Return agent with highest confidence score
+        # Return specialized agent with highest confidence score (if score is high enough)
         if agent_scores:
-            best_agent = max(agent_scores, key=lambda x: x[1])[0]
-            return best_agent
+            best_agent, best_score = max(agent_scores, key=lambda x: x[1])
+            # Only use specialized agent if confidence is reasonably high
+            if best_score >= 6.0:
+                return best_agent
         
-        return self  # Default to tutor agent if no specialist matches
+        # Default to tutor agent for general off-syllabus questions
+        return self
     
     def process(self, question: str, mode: str = "off-syllabus") -> Dict[str, Any]:
         # Find the best agent for this question
-        best_agent = self.find_best_agent(question)
+        best_agent = self.find_best_agent(question, mode)
         
         if best_agent != self:
             # Delegate to specialized agent
             result = best_agent.process(question, mode)
             return {
                 "answer": result["answer"],
-                "agent_used": best_agent.name,
+                "agent_used": result["agent_used"],
                 "tools_used": result.get("tools_used", []),
-                "sources": result.get("sources", [])
+                "sources": result.get("sources", []),
+                "routed_by": self.name
             }
         else:
-            # Handle general questions with enhanced Tutor Agent
-            if mode == "on-syllabus":
-                # Search for relevant documents for general questions
-                relevant_docs = self._search_documents(question)
-                
-                if not relevant_docs:
-                    return {
-                        "answer": "I couldn't find any relevant content in the syllabus materials to answer your question. Please check if the topic is covered in your course materials or try the off-syllabus mode for general knowledge.",
-                        "agent_used": self.name,
-                        "tools_used": [],
-                        "sources": []
-                    }
-                
-                # Create context from relevant documents
-                doc_context = "\n\n".join([
-                    f"From {doc['file']}:\n{doc['content']}"
-                    for doc in relevant_docs
-                ])
-                
-                prompt = f"""
-                You are a knowledgeable tutor. Answer this question using ONLY the information provided from the syllabus materials below. Do not use external knowledge.
-                
-                Question: {question}
-                
-                Syllabus Materials:
-                {doc_context}
-                
-                Instructions:
-                - Answer based ONLY on the provided syllabus materials
-                - If the answer isn't fully covered in the materials, clearly state what information is missing
-                - Break down complex topics as explained in the materials
-                - Reference specific sections or examples from the materials
-                - Make your explanation suitable for a student following the syllabus
-                """
-                
-                sources = [doc['file'] for doc in relevant_docs]
-            else:
-                # Off-syllabus mode
-                prompt = f"""
-                You are a knowledgeable and helpful tutor. Answer this question clearly and educationally.
-                
-                Question: {question}
-                
-                Instructions:
-                - Provide comprehensive but accessible explanations
-                - Break down complex topics into understandable parts
-                - Use examples to illustrate concepts when helpful
-                - Encourage learning and curiosity
-                - If the question spans multiple subjects, address each aspect appropriately
-                - Make your explanation suitable for a student seeking to learn
-                """
-                sources = []
+            # Handle general off-syllabus questions directly
+            prompt = f"""
+            You are a knowledgeable and helpful tutor. Answer this question clearly and educationally.
+            
+            Question: {question}
+            
+            Instructions:
+            - Provide comprehensive but accessible explanations
+            - Break down complex topics into understandable parts
+            - Use examples to illustrate concepts when helpful
+            - Encourage learning and curiosity
+            - If the question spans multiple subjects, address each aspect appropriately
+            - Make your explanation suitable for a student seeking to learn
+            """
             
             try:
                 response = self.model.generate_content(prompt)
@@ -130,12 +102,12 @@ class TutorAgent(Agent):
                     "answer": response.text,
                     "agent_used": self.name,
                     "tools_used": [],
-                    "sources": sources
+                    "sources": []
                 }
             except Exception as e:
                 return {
                     "answer": f"I encountered an error processing your question: {str(e)}",
                     "agent_used": self.name,
                     "tools_used": [],
-                    "sources": sources if mode == "on-syllabus" else []
+                    "sources": []
                 }

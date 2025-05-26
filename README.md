@@ -8,7 +8,7 @@ PlinyTheElder is an AI-powered tutoring system built on multi-agent architecture
 ## Key Architecture
 
 - **Main Tutor Agent**: Acts as orchestrator, analyzing questions and routing to appropriate specialists
-- **Specialist Sub-Agents**: Domain-specific agents (Mathematics, Physics, etc.)
+- **Specialist Sub-Agents**: Domain-specific agents (Mathematics, Physics, Syllabus, etc.)
 - **Tool Integration**: Sub-agents utilize tools (calculators, data lookups, etc.) for precise solutions
 - **Gemini API**: Powers the language model capabilities throughout the system
 - **Document Processing Engine**: Parses and indexes uploaded syllabus materials
