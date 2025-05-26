@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor - On-Syllabus Mode</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 AI Tutor - On-Syllabus Mode</h1>
+        
+        <div class="mode-switcher">
+            <a href="/" class="mode-button">
+                <span>🎓</span> Off-Syllabus Mode
+            </a>
+            <a href="/on-syllabus" class="mode-button active">
+                <span>📚</span> On-Syllabus Mode
+            </a>
+        </div>
+        
+        <div class="mode-info">
+            <strong>🎯 On-Syllabus Mode</strong>
+            <p>Stay focused on your curriculum! I'll answer questions using only the content from your uploaded syllabus materials. Perfect for exam preparation, homework help, and ensuring you're learning exactly what's required for your course.</p>
+        </div>
+        
+        <p>Ask questions about topics covered in your syllabus materials. I'll search through your uploaded content to provide accurate, curriculum-focused answers with proper source citations.</p>
+        
+        <div class="form-group">
+            <label for="question">
+                <span>💭</span> Your Question:
+            </label>
+            <input type="text" id="question" placeholder="e.g., Explain the concept from Chapter 3, or What does the textbook say about photosynthesis?">
+        </div>
+        
+        <button onclick="askQuestion()">
+            <span>🔍</span> Search & Answer
+        </button>
+        <button class="secondary" onclick="checkBooks()">
+            <span>🔄</span> Refresh Library Status
+        </button>
+        
+        <div class="loading" id="loading">
+            <span>🔍</span> Searching through your syllabus materials...
+        </div>
+        
+        <div id="response" class="response" style="display: none;">
+            <div id="answer" class="answer-content"></div>
+            <div id="sources" class="sources" style="display: none;">
+                <strong>📖 Sources from your materials:</strong>
+                <ul id="sources-list"></ul>
+            </div>
+            <div id="agent-info" class="agent-info">
+                <span>🤖</span> <span id="agent-details"></span>
+            </div>
+        </div>
+
+        <div id="books-status" class="books-status">
+            <strong>🔍 Checking syllabus materials...</strong>
+        </div>
+
+        <div class="upload-section">
+            <h3 style="margin-top: 0; color: var(--accent-light); display: flex; align-items: center; gap: 10px;">
+                <span>📚</span> Build Your Knowledge Library
+            </h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">Upload your textbooks, lecture notes, PDFs, and study materials to create a personalized learning database.</p>
+            
+            <div class="form-group">
+                <label for="file-upload">
+                    <span>📁</span> Select files to upload:
+                </label>
+                <div class="file-drop-zone" id="drop-zone" onclick="document.getElementById('file-upload').click()">
+                    <p><span style="font-size: 2rem;">📁</span><br>Drag & drop files here or click to browse</p>
+                    <small>Supported: PDF, TXT, Markdown, Word documents (DOCX, DOC)</small>
+                </div>
+                <input type="file" id="file-upload" accept=".pdf,.txt,.md,.docx,.doc" multiple style="display: none;">
+                <div id="selected-files" style="margin-top: 15px; display: none;">
+                    <strong style="color: var(--accent-light);">📋 Selected files:</strong>
+                    <ul id="file-list"></ul>
+                </div>
+                <button class="secondary" onclick="uploadBooks()" style="margin-top: 15px;">
+                    <span>📤</span> Upload Books
+                </button>
+                <div id="upload-status" class="upload-status" style="display: none;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/static/scripts/on_syllabus.js"></script>
+</body>
+</html>

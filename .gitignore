@@ -1,0 +1,11 @@
+# Ignore .env files
+.env
+
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore everything in the books directory
+books/*

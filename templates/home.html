@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor Multi-Agent System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Tutor Multi-Agent System</h1>
+        
+        <div class="mode-switcher">
+            <a href="/" class="mode-button active">
+                <span>🎓</span> Off-Syllabus Mode
+            </a>
+            <a href="/on-syllabus" class="mode-button">
+                <span>📚</span> On-Syllabus Mode
+            </a>
+        </div>
+        
+        <div class="mode-info">
+            <strong>🌟 Off-Syllabus Mode</strong>
+            <p>Explore beyond boundaries! I can answer questions using my comprehensive knowledge across all subjects. Perfect for discovering new concepts, getting detailed explanations, and expanding your understanding beyond curriculum limits.</p>
+        </div>
+        
+        <p>Ask me anything about mathematics, physics, chemistry, biology, history, literature, or any other topic. I'll intelligently route your question to the most qualified specialist agent for the best possible answer!</p>
+        
+        <div class="form-group">
+            <label for="question">
+                <span>💭</span> Your Question:
+            </label>
+            <input type="text" id="question" placeholder="e.g., What is the derivative of x²? or Explain quantum entanglement in simple terms">
+        </div>
+        
+        <button onclick="askQuestion()">
+            <span>🚀</span> Ask Question
+        </button>
+        
+        <div class="loading" id="loading">
+            <span>🔍</span> Processing your question with AI agents...
+        </div>
+        
+        <div id="response" class="response" style="display: none;">
+            <div id="answer" class="answer-content"></div>
+            <div id="agent-info" class="agent-info">
+                <span>🤖</span> <span id="agent-details"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/scripts/home.js"></script>
+</body>
+</html>
