@@ -46,10 +46,10 @@ PlinyTheElder is an AI-powered tutoring system built on multi-agent architecture
 
 4. Run the application:
    ```bash
-   python server.py
+   python app.py
    ```
 
-5. Access the web interface at `http://localhost:8000/`
+5. Access the web interface at `http://0.0.0.0:8000/` (Default Railway Configuration). For Local Debugging, the interface is set to `http://localhost:8000`.
 
 ## Usage Instructions
 
@@ -70,12 +70,8 @@ PlinyTheElder is an AI-powered tutoring system built on multi-agent architecture
 
 ## Deployment
 
-The application can be deployed to:
+The application is deployed to:
 - Railway
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 

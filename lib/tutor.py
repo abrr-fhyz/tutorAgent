@@ -1,8 +1,8 @@
 from typing import Dict, Any
 
 from lib.tools.agent import Agent
-from lib.tools.mathAgent import MathTool
-from lib.tools.physicsAgent import PhysicsTool
+from lib.tools.mathTool import MathTool
+from lib.tools.physicsTool import PhysicsTool
 
 class TutorAgent(Agent):
     def __init__(self):
