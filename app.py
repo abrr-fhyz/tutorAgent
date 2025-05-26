@@ -14,7 +14,7 @@ from lib.tools.util import QueryRequest, QueryResponse
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
-app = FastAPI(title="AI Tutor Multi-Agent System")
+app = FastAPI(title="Pliny")
 
 if not api_key:
     raise ValueError("Please set the Gemini API Key in your .env file.")
