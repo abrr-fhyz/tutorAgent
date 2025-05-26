@@ -1,18 +1,18 @@
 from typing import Dict, Any
 
 from lib.tools.agent import Agent
-from lib.tools.mathAgent import MathAgent
-from lib.tools.physicsAgent import PhysicsAgent
+from lib.tools.mathAgent import MathTool
+from lib.tools.physicsAgent import PhysicsTool
 
 class TutorAgent(Agent):
     def __init__(self):
         super().__init__(
             name="Tutor Agent",
-            description="Main orchestrator that intelligently routes questions to specialized agents"
+            description="Main orchestrator that intelligently routes questions to specialized tools"
         )
-        self.specialized_agents = [
-            MathAgent(),
-            PhysicsAgent()
+        self.specialized_tools = [
+            MathTool(),
+            PhysicsTool()
         ]
     
     def can_handle(self, question: str) -> bool:
@@ -23,7 +23,7 @@ class TutorAgent(Agent):
         
         # Check each specialized agent's capability
         agent_scores = []
-        for agent in self.specialized_agents:
+        for agent in self.specialized_tools:
             try:
                 if agent.can_handle(question):
                     # Get confidence score for better routing

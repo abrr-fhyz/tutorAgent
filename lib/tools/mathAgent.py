@@ -2,7 +2,7 @@ from lib.tools.util import CalculatorTool
 from lib.tools.agent import Agent
 from typing import Dict, Any
 
-class MathAgent(Agent):
+class MathTool(Agent):
     def __init__(self):
         super().__init__(
             name="Math Agent",

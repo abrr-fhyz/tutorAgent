@@ -2,7 +2,7 @@ from lib.tools.util import CalculatorTool
 from lib.tools.agent import Agent
 from typing import Dict, Any
 
-class PhysicsAgent(Agent):
+class PhysicsTool(Agent):
     def __init__(self):
         super().__init__(
             name="Physics Agent",
